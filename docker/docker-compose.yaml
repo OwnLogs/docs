@@ -1,0 +1,7 @@
+services:
+  frontend:
+    image: ownlogs/docs:latest
+    environment:
+      NODE_ENV: production
+    ports:
+      - '4173:3000'

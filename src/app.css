@@ -1,0 +1,230 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+    --ring: 240 10% 3.9%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --ring: 240 4.9% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer base {
+  * {
+    @apply scroll-smooth border-border;
+  }
+}
+
+body {
+  @apply bg-background text-foreground;
+}
+
+/* Used for theme toggling */
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  /*
+    Uncomment the line below if you want to use the background providede by the theme you choose.
+    You will also need to remobve the bg classes for the .shiki class.
+  */
+  /* background-color: var(--shiki-dark-bg) !important; */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* Base styles for all code blocks thruout the app */
+code {
+  counter-reset: codeStep;
+  counter-increment: codeStep 0;
+  direction: ltr;
+  -moz-tab-size: 2;
+  -o-tab-size: 2;
+  tab-size: 2;
+  @apply hyphens-none whitespace-pre-wrap ligatures-normal;
+}
+
+/* Highlighted code blocks */
+.shiki {
+  @apply relative overflow-auto whitespace-pre rounded-lg border border-border !bg-background py-6 focus:-outline-offset-1;
+}
+
+.line-numbers .line::before {
+  content: counter(codeStep);
+  counter-increment: codeStep;
+  font-variant-numeric: tabular-nums;
+  @apply inline-block w-6 text-left text-primary;
+}
+
+/* For snippet */
+.snippet {
+  @apply relative my-4 flex w-full max-w-[500px] flex-row items-stretch overflow-hidden rounded-lg border border-border;
+}
+
+.snippet .shiki {
+  @apply w-full rounded-none border-none p-4;
+}
+
+.snippet > pre > code .line::before,
+.commands > pre > code .line::before {
+  @apply mr-4 inline-block w-fit text-center text-primary content-['$'];
+}
+
+.snippet pre > code .line {
+  @apply whitespace-pre p-0 pr-10;
+}
+
+/* For regular code blocks */
+pre > code .line {
+  @apply relative inline-block w-full px-6;
+}
+
+pre > code {
+  @apply block w-full;
+}
+
+/* For highlighted lines */
+.diff.remove {
+  @apply bg-red-600/20 after:absolute after:left-2 after:top-1/2 after:-translate-y-1/2 after:text-red-600 after:content-['-'];
+}
+
+.diff.add {
+  @apply bg-green-600/20 after:absolute after:left-2 after:top-1/2 after:-translate-y-1/2 after:text-green-600 after:content-['+'];
+}
+
+.highlighted {
+  @apply bg-primary/20 after:absolute after:left-0 after:h-full after:w-[2px] after:bg-primary;
+}
+
+/* Inline code */
+code:not(pre code, .command) {
+  @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+}
+
+.commands > pre,
+.commandsCode pre {
+  @apply m-0 rounded-none border-none py-4;
+}
+
+/* Styling page components */
+
+/* Table */
+main table thead {
+  @apply bg-secondary;
+}
+main table th {
+  @apply border-b p-4 pb-3 pl-8 text-left font-medium text-neutral-800;
+}
+main table td {
+  @apply border-b border-border p-4 pl-8 text-muted-foreground;
+}
+
+/* Lists */
+main ul:not(ul.tree, .commands ul, .collapsible-details ul, .collapsible-details ol, .demo ul),
+main ol {
+  @apply my-6 ml-6 list-disc [&>li]:mt-2;
+}
+main ol:not(.steps) > li {
+  @apply list-decimal;
+}
+
+/* TaskList */
+main .task-list-item {
+  @apply flex items-center gap-2;
+}
+main .task-list-item input[type='checkbox'] {
+  @apply relative size-[1.15rem] appearance-none rounded border border-border after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:text-sm after:font-bold after:text-primary-foreground checked:border-primary checked:bg-primary checked:after:content-["✓"];
+}
+
+/* Text */
+main h1 {
+  @apply mb-2 mt-4 text-4xl font-extrabold tracking-tight lg:text-5xl;
+}
+main h2 {
+  @apply mb-2 mt-12 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+}
+main h3 {
+  @apply mb-2 mt-9 text-2xl font-semibold tracking-tight;
+}
+main h4 {
+  @apply mb-2 mt-4 text-xl font-semibold tracking-tight;
+}
+main p {
+  @apply leading-7;
+}
+main blockquote {
+  @apply mt-6 border-l-2 pl-6 italic;
+}
+
+mark {
+  @apply bg-primary text-primary-foreground;
+}
+kbd {
+  @apply rounded bg-accent px-2 py-1 font-mono text-sm font-normal text-accent-foreground;
+}
