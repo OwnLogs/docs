@@ -5,3 +5,5 @@ dist
 .env
 build
 .svelte-kit
+Dockerfile
+docker/

@@ -1,22 +1,23 @@
-FROM node:22-alpine
+FROM node:22-alpine AS build
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-
-# Set the working directory
-WORKDIR /usr/src/app
-
-# Copy the application code and shared types
-COPY . .
+WORKDIR /app
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+COPY package.json ./
+RUN pnpm install
 
 # Build
+COPY . .
 RUN pnpm run build
 
-# Expose the port the app runs on
-EXPOSE 3000
 
-# Command to run the application
-CMD ["node", "build"]
+# Prod server
+FROM node:18-alpine AS prod
+WORKDIR /app
+COPY --from=build /app/build build/
+COPY --from=build /app/node_modules node_modules/
+COPY package.json .
+EXPOSE ${PORT}
+CMD [ "node", "build" ]

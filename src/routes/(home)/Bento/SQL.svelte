@@ -3,7 +3,7 @@
   import { flip } from 'svelte/animate';
   import { scale } from 'svelte/transition';
   import LogLevel from '$lib/components/LogLevel.svelte';
-  import type { LogLevel as LogLevelType } from '@shared/types';
+  import type { LogLevel as LogLevelType } from '$lib/types';
   import Button from '$lib/components/ui/button/button.svelte';
 
   const getRandomRecentDate = () => {

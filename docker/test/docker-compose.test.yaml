@@ -2,6 +2,8 @@ services:
   frontend:
     image: ownlogs/docs:staging
     environment:
-      NODE_ENV: production
+      ORIGIN: http://localhost:3000
+      HOST: 0.0.0.0
+      PORT: 3000
     ports:
       - '4173:3000'
