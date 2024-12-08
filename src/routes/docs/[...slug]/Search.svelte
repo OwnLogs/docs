@@ -106,16 +106,15 @@
 </script>
 
 {#if open}
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <div
-    class="fixed inset-0 z-50 bg-black/80"
-    transition:fade={{ duration: 200 }}
+  <button
+    aria-label="Search background, click to dismiss"
+    class="fixed inset-0 z-40 bg-primary/50"
     onclick={() => (open = false)}
-  ></div>
-  <div class="fixed inset-0 z-50 p-4 sm:p-6 md:p-12">
+    transition:fade={{ duration: 200 }}
+  ></button>
+  <div class="fixed z-40 left-4 right-4 top-4 sm:top-6 sm:right-6 sm:left-6 md:top-12 md:left-1/2 md:-translate-x-1/2 md:max-w-screen-md md:w-full">
     <div
-      class="no-scrollbar mx-auto max-h-[300px] w-full max-w-screen-md overflow-hidden overflow-y-auto rounded-2xl bg-background"
+      class="no-scrollbar w-full max-h-[300px] overflow-hidden overflow-y-auto rounded-2xl bg-background"
       transition:scale={{ start: 0.8, duration: 200 }}
       onscroll={onResultsScroll}
     >

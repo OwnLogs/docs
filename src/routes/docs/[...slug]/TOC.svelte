@@ -28,7 +28,7 @@
       top: 0,
       height: 0,
       left: 0,
-      right: 0
+      width: 0
     },
     {
       stiffness: 0.1,
@@ -37,15 +37,21 @@
   );
 
   afterNavigate(() => {
+    indicatorCords.target = {
+      top: 0,
+      height: 0,
+      left: 0,
+      width: 0
+    };
     if (!componentElement) return;
 
     const headingsElements = componentElement.querySelectorAll('h1, h2, h3, h4');
     headings = createHeadingTree(Array.from(headingsElements) as HTMLHeadingElement[]);
-    setTopPos(headings);
 
     const navBar = document.getElementsByTagName('nav')[0];
     const topOffset = navBar.clientHeight;
     const container = document.querySelector('main') as HTMLElement;
+    setTopPos(headings, container);
     windowScrollHandler(topOffset, container);
     container.addEventListener('scroll', () => {
       windowScrollHandler(topOffset, container);
@@ -87,14 +93,14 @@
     return root;
   }
 
-  function setTopPos(headings: Heading[]) {
+  function setTopPos(headings: Heading[], container: HTMLElement) {
     headings.forEach((e) => {
       const element = document.getElementById(e.id);
       if (!element) return;
-      headingScrolls[e.id] = element.getBoundingClientRect().top + window.scrollY;
+      headingScrolls[e.id] = element.getBoundingClientRect().top + container.scrollTop;
 
       if (e.children.length > 0) {
-        setTopPos(e.children);
+        setTopPos(e.children, container);
       }
     });
   }
@@ -103,7 +109,7 @@
     const scrollPosition = container.scrollTop;
     const maxScrollPosition = container.scrollHeight - container.clientHeight;
     // Calculate the progress based on how much the user has scrolled relative to the maximum scroll position
-    const progress = scrollPosition / maxScrollPosition;
+    const progress = scrollPosition / maxScrollPosition || 0;
 
     // Interpolate the trigger value between offset and container.scrollHeight
     // As progress goes from 0 to 1, trigger smoothly moves from scrollPosition + offset to scrollPosition + container.scrollHeight
@@ -114,26 +120,27 @@
     for (let i in headingScrolls) {
       if (headingScrolls[i] <= trigger) {
         const currentHeading = document.querySelector(`[href="#${i}"]`) as HTMLElement;
-        if (!currentHeading) return;
-        activeHeadingInSidebar = currentHeading;
+        if (currentHeading) {
+          activeHeadingInSidebar = currentHeading;
+        }
       }
     }
     if (!activeHeadingInSidebar) return;
     if (activeHeadingInSidebar.offsetTop === indicatorCords.target.top) return;
-    const left = activeHeadingInSidebar.parentElement?.offsetLeft || 0;
+    const left = activeHeadingInSidebar?.offsetLeft || 0;
     const yPadding = 4;
     const xPadding = 8;
     indicatorCords.target = {
       top: activeHeadingInSidebar.offsetTop - yPadding / 2,
       height: activeHeadingInSidebar.offsetHeight + yPadding,
       left: left + xPadding,
-      right: left + xPadding
+      width: activeHeadingInSidebar?.offsetWidth - xPadding * 2
     };
   }
 </script>
 
 <div class="invisible hidden opacity-0" bind:this={componentElement}>
-  <svelte:component this={page.component} />
+  <page.component />
 </div>
 
 <div class="shrink-0 py-4">
@@ -149,12 +156,11 @@
 
     <!-- Indicator -->
     <div
-      class="pointer-events-none absolute rounded-lg bg-primary-foreground"
+      class="pointer-events-none absolute rounded-lg bg-primary-foreground mix-blend-difference dark:invert"
       style:top={indicatorCords.current.top + 'px'}
-      style:right={indicatorCords.current.right + 'px'}
+      style:width={indicatorCords.current.width + 'px'}
       style:left={indicatorCords.current.left + 'px'}
       style:height={indicatorCords.current.height + 'px'}
-      style="mix-blend-mode: difference;"
     ></div>
   </div>
 

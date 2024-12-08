@@ -63,6 +63,10 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  * {
+    @apply scroll-smooth border-border;
+  }
 }
 
 @layer utilities {
@@ -72,12 +76,6 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-}
-
-@layer base {
-  * {
-    @apply scroll-smooth border-border;
   }
 }
 
@@ -112,7 +110,7 @@ code {
 
 /* Highlighted code blocks */
 .shiki {
-  @apply relative overflow-auto whitespace-pre rounded-lg border border-border !bg-background py-6 focus:-outline-offset-1;
+  @apply relative overflow-x-auto whitespace-pre rounded-lg border border-border !bg-background py-6;
 }
 
 .line-numbers .line::before {
@@ -188,7 +186,7 @@ main table td {
 /* Lists */
 main ul:not(ul.tree, .commands ul, .collapsible-details ul, .collapsible-details ol, .demo ul),
 main ol {
-  @apply my-6 ml-6 list-disc [&>li]:mt-2;
+  @apply ml-6 list-disc [&>li]:mt-2;
 }
 main ol:not(.steps) > li {
   @apply list-decimal;
@@ -222,6 +220,7 @@ main blockquote {
   @apply mt-6 border-l-2 pl-6 italic;
 }
 
+/* Others */
 mark {
   @apply bg-primary text-primary-foreground;
 }

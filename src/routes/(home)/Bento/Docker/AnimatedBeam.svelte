@@ -45,6 +45,7 @@
     let containerRect = containerRef?.getBoundingClientRect();
     let rectA = fromRef?.getBoundingClientRect();
     let rectB = toRef?.getBoundingClientRect();
+    if(!containerRect || !rectA || !rectB) return;
 
     let svgWidth = containerRect.width;
     let svgHeight = containerRect.height;

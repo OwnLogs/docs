@@ -13,7 +13,7 @@
 <ol class={cn('mt-1 space-y-1', !root && 'mb-2 ml-4 border-l border-border')}>
   {#each headings as heading}
     <li class="list-none">
-      <a href="#{heading.id}" class="block pl-4 font-mono transition-colors">
+      <a href="#{heading.id}" class="block px-4 w-fit font-mono transition-colors text-primary">
         {heading.text}
       </a>
       {#if heading.children.length > 0}

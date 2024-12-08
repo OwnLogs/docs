@@ -5,6 +5,7 @@
   import Toc from './TOC.svelte';
   import Pagination from './Pagination.svelte';
   import { pageMetadata } from '$lib/stores';
+  import { ModeWatcher } from 'mode-watcher'
 
   let { data } = $props();
   let sideBarOpen = $state(false);
@@ -18,17 +19,21 @@
   });
 </script>
 
+<ModeWatcher />
+
 <Search bind:open={searchOpen} />
 
 <div class="mx-auto flex h-svh w-full max-w-screen-2xl flex-row bg-background">
-  <Sidebar bind:open={sideBarOpen} />
+  <Sidebar bind:open={sideBarOpen} bind:searchOpen />
   <div class="flex h-full w-full flex-col">
     <Navbar page={data} bind:sideBarOpen bind:searchOpen />
-    <div class="flex h-[calc(100svh-4rem)] grow flex-col-reverse lg:flex-row">
-      <main class="no-scrollbar flex grow flex-col overflow-y-auto p-2 lg:p-4">
-        {#if data?.component}
-          <svelte:component this={data.component} />
-        {/if}
+    <div class="flex h-[calc(100svh-4rem)] grow flex-col-reverse lg:flex-row no-scrollbar max-lg:overflow-y-auto 2xl:border-r border-border">
+      <main class="grow flex flex-col p-2 lg:p-4 no-scrollbar lg:overflow-y-auto">
+        <div class="grow block">
+          {#if data?.component}
+            <data.component />
+          {/if}
+        </div>
         <Pagination page={data} />
       </main>
 

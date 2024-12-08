@@ -2,8 +2,10 @@
   import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
   import type { Page } from '$lib/pages';
   import { MediaQuery } from 'runed';
-  import { PanelLeft, Search } from 'lucide-svelte';
+  import { PanelLeft, Search, Sun, Moon } from 'lucide-svelte';
   import { Button } from '$lib/components/ui/button';
+  import { toggleMode, mode } from 'mode-watcher';
+  import { scale } from 'svelte/transition';
 
   interface Props {
     page: Page;
@@ -17,7 +19,7 @@
 </script>
 
 <div
-  class="flex h-14 shrink-0 flex-row items-center justify-between border-b border-sidebar-border bg-background px-4"
+  class="flex h-14 shrink-0 flex-row items-center justify-between border-b border-sidebar-border bg-background px-4 2xl:border-r border-border"
 >
   <div class="flex flex-row gap-4">
     {#if isMobile.matches}
@@ -38,7 +40,7 @@
       </Breadcrumb.List>
     </Breadcrumb.Root>
   </div>
-  <div class="flex flex-row items-center gap-2">
+  <div class="flex flex-row items-center gap-2 max-lg:hidden">
     <!-- Github -->
     <a href="https://github.com/OwnLogs/ownlogs">
       <svg
@@ -51,6 +53,19 @@
         /></svg
       >
     </a>
+
+    <Button size="icon" variant="outline" onclick={toggleMode}>
+      {#if $mode === 'dark'}
+        <span in:scale>
+          <Sun class="size-full" />
+        </span>
+      {:else}
+        <span in:scale>
+          <Moon class="size-full" />
+        </span>
+      {/if}
+    </Button>
+
     <Button size="icon" variant="outline" onclick={() => (searchOpen = true)}>
       <Search class="size-full" />
     </Button>
