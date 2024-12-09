@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json ./
-RUN pnpm install
+RUN --mount=type=cache,target=/root/.npm npm install
 
 # Build
 COPY . .
@@ -14,7 +14,7 @@ RUN pnpm run build
 
 
 # Prod server
-FROM node:18-alpine AS prod
+FROM node:22-alpine AS prod
 WORKDIR /app
 COPY --from=build /app/build build/
 COPY --from=build /app/node_modules node_modules/

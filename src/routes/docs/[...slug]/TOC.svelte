@@ -31,8 +31,8 @@
       width: 0
     },
     {
-      stiffness: 0.1,
-      damping: 0.25
+      stiffness: 0.3,
+      damping: 0.35
     }
   );
 
