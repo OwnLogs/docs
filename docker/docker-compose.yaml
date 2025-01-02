@@ -1,9 +1,10 @@
 services:
   frontend:
+    container_name: ownlogs-docs
     image: ownlogs/docs:latest
     environment:
-      ORIGIN: http://localhost:3000
+      ORIGIN: http://localhost:8184
       HOST: 0.0.0.0
       PORT: 3000
     ports:
-      - '4173:3000'
+      - '8184:3000'
